@@ -1,10 +1,11 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // write your code here
         Scanner scanner = new Scanner(System.in);
 
@@ -24,8 +25,11 @@ public class Main {
         System.out.println("Enter Engine size in liters: ");
         double EngineSizeInLiters = scanner.nextDouble();
 
-        VehicleInfo vehicleInfo = new VehicleInfo();
+        VehicleInfo vehicleInfo = new VehicleInfo(VIN, Odometer, Consumption, OdemeterFromLastOilChange, EngineSizeInLiters);
 
+        TelematicsService service = new TelematicsService();
+
+        service.report(vehicleInfo);
 
 
 

@@ -11,6 +11,14 @@ public class VehicleInfo {
 
     }
 
+    public VehicleInfo(int VIN, double odometer, double consumption, double odometerFromLastOilChange, double engineSizeInLiters) {
+        this.VIN = VIN;
+        Odometer = odometer;
+        Consumption = consumption;
+        OdometerFromLastOilChange = odometerFromLastOilChange;
+        EngineSizeInLiters = engineSizeInLiters;
+    }
+
     public int getVIN() {
         return VIN;
     }
