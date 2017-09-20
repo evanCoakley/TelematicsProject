@@ -20,15 +20,13 @@ public class TelematicsService {
          try {
              String json = mapper.writeValueAsString(vehicleInfo);
 
-             try {
-                 File file = new File(Integer.toString(vehicleInfo.getVIN()) + ".json");
-                 FileWriter fileWriter = new FileWriter(file);
+             File file = new File(Integer.toString(vehicleInfo.getVIN()) + ".json");
+             try (FileWriter fileWriter = new FileWriter(file);) {
                  fileWriter.write(json);
-                 fileWriter.close();
-             } catch (JsonProcessingException e) {
+             } catch (IOException e) {
                  e.printStackTrace();
              }
-         } catch (IOException ex) {
+         } catch (JsonProcessingException ex) {
              ex.printStackTrace();
          }
          // (2)
@@ -50,6 +48,16 @@ public class TelematicsService {
              }
          }
          String html = htmlMerge();
+
+         // save html to file
+
+         File file1 = new File("Dashboard.html");
+         try (FileWriter fw = new FileWriter(file1)) {
+             fw.write(html);
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
+
 
          }// (3)
 
@@ -75,9 +83,9 @@ public class TelematicsService {
 
                 // spin thru add each v as a new TR line
                 midHTML += "<tr>\n" +
-                        "        <td align=\"center\">#vin</td><td align=\"center\">#odom</td><td align=\"center\">#consum</td><td align=\"center\">#lastoil</td><td align=\"center\">#engine</td>\n" +
-                        "    </tr>"
-                                .replaceFirst("#vin", String.valueOf(v.getVIN()))
+                        "        <td align=\"center\"></td><td align=\"center\">#vin</td><td align=\"center\">#odom</td><td align=\"center\">#consum</td><td align=\"center\">#lastoil</td><td align=\"center\">#engine</td>\n" +
+                        "    </tr>";
+                midHTML = midHTML.replaceFirst("#vin", String.valueOf(v.getVIN()))
                                 .replaceFirst("#odom", String.valueOf(v.getOdometer()))
                                 .replaceFirst("#consum", String.valueOf(v.getConsumption()))
                                 .replaceFirst("#lastoil", String.valueOf(v.getOdometerFromLastOilChange()))
@@ -90,6 +98,9 @@ public class TelematicsService {
                     "</html>";
 
             return topHTML + midHTML + bottomHTML;
+
+
+
         }
 
 
